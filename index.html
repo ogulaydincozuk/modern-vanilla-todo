@@ -3,42 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iTask Dashboard</title>
+    <title>iTask Midnight Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app-container">
         <aside class="sidebar">
-            <div class="profile">
-                <div class="avatar">OÇ</div>
-                <span>Oğul Aydın</span>
-            </div>
+            <div class="brand">iTask Pro</div>
             <nav>
-                <div class="nav-item active">Odak</div>
-                <div class="nav-item">Planlanmış</div>
-                <div class="nav-item">Tamamlanan</div>
+                <button class="filter-btn active" data-filter="all">Tümü</button>
+                <button class="filter-btn" data-filter="pending">Bekleyenler</button>
+                <button class="filter-btn" data-filter="completed">Bitenler</button>
             </nav>
+            <div class="progress-section">
+                <span class="progress-text">Verimlilik</span>
+                <div class="progress-bar"><div id="progress-fill"></div></div>
+            </div>
         </aside>
         
         <main class="dashboard">
             <header class="main-header">
-                <h1>Bugün</h1>
+                <h1>Gecen İyi Olsun, Oğul</h1>
                 <p id="current-date"></p>
             </header>
             
-            <div class="task-input-section">
-                <input type="text" id="todo-input" placeholder="Yeni bir görev planla...">
-                <button id="add-btn">+</button>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-value" id="pending-count">0</span>
-                    <span class="stat-label">Bekleyen</span>
+            <div class="input-panel">
+                <div class="input-row">
+                    <input type="text" id="todo-input" placeholder="Görevi planla...">
+                    <select id="category-input">
+                        <option value="İş">İş</option>
+                        <option value="Kişisel">Kişisel</option>
+                        <option value="Acil">Acil</option>
+                    </select>
                 </div>
-                <div class="stat-card">
-                    <span class="stat-value" id="completed-count">0</span>
-                    <span class="stat-label">Biten</span>
+                <div class="input-row">
+                    <input type="date" id="date-input">
+                    <button id="add-btn">Ekle</button>
                 </div>
             </div>
 
