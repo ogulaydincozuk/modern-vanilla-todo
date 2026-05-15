@@ -1,48 +1,46 @@
 const input = document.getElementById('todo-input');
 const addBtn = document.getElementById('add-btn');
 const todoList = document.getElementById('todo-list');
+const pendingLabel = document.getElementById('pending-count');
+const completedLabel = document.getElementById('completed-count');
 
-document.addEventListener('DOMContentLoaded', getTodos);
-addBtn.addEventListener('click', addTodo);
+document.getElementById('current-date').innerText = new Date().toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
 
-function addTodo() {
+addBtn.addEventListener('click', () => {
     if (input.value.trim() === "") return;
-    
-    createTodoElement(input.value);
-    saveLocalTodos(input.value);
+    createTodo(input.value, false);
     input.value = "";
-}
+    updateStats();
+});
 
-function createTodoElement(text) {
+function createTodo(text, isDone) {
     const li = document.createElement('li');
-    li.innerHTML = `<span>${text}</span><button class="delete-btn">Sil</button>`;
+    li.className = `task-item ${isDone ? 'completed' : ''}`;
+    li.innerHTML = `
+        <span>${text}</span>
+        <div class="actions">
+            <span class="delete-action">Sil</span>
+        </div>
+    `;
     
     li.addEventListener('click', (e) => {
-        if (e.target.tagName !== 'BUTTON') li.classList.toggle('completed');
+        if (e.target.className !== 'delete-action') {
+            li.classList.toggle('completed');
+            updateStats();
+        }
     });
 
-    li.querySelector('.delete-btn').addEventListener('click', () => {
-        removeLocalTodos(text);
+    li.querySelector('.delete-action').addEventListener('click', () => {
         li.remove();
+        updateStats();
     });
 
     todoList.appendChild(li);
 }
 
-function saveLocalTodos(todo) {
-    let todos = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
-    todos.push(todo);
-    localStorage.setItem('todos', JSON.stringify(todos));
-}
-
-function getTodos() {
-    let todos = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
-    todos.forEach(todo => createTodoElement(todo));
-}
-
-function removeLocalTodos(todo) {
-    let todos = JSON.parse(localStorage.getItem('todos'));
-    const index = todos.indexOf(todo);
-    todos.splice(index, 1);
-    localStorage.setItem('todos', JSON.stringify(todos));
+function updateStats() {
+    const total = document.querySelectorAll('.task-item').length;
+    const completed = document.querySelectorAll('.task-item.completed').length;
+    pendingLabel.innerText = total - completed;
+    completedLabel.innerText = completed;
 }
